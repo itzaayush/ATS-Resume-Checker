@@ -1,0 +1,280 @@
+@import "tailwindcss";
+
+/* Class-based dark mode so the user's choice can be persisted, not just inferred. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------ tokens */
+
+:root {
+  --background: #ffffff;
+  --surface: #ffffff;
+  --surface-raised: #f6f7f9;
+  --surface-sunken: #eef0f4;
+  --border: #dfe3ea;
+  --border-strong: #c6ccd8;
+  --foreground: #0d1117;
+  --muted: #5a6472;
+  --subtle: #7d8798;
+
+  --accent: #4f46e5;
+  --accent-soft: #eef2ff;
+  --accent-contrast: #ffffff;
+
+  --success: #0f8a5f;
+  --success-soft: #e6f6ef;
+  --warning: #b26a00;
+  --warning-soft: #fdf3e3;
+  --danger: #c62f3d;
+  --danger-soft: #fdeced;
+
+  --grid: rgba(13, 17, 23, 0.05);
+  --glow: rgba(79, 70, 229, 0.16);
+
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: #07080c;
+  --surface: #0d1017;
+  --surface-raised: #131824;
+  --surface-sunken: #0a0d14;
+  --border: #1e2534;
+  --border-strong: #2c3446;
+  --foreground: #e8ecf4;
+  --muted: #97a1b4;
+  --subtle: #6c7789;
+
+  --accent: #7c7cf9;
+  --accent-soft: #171a35;
+  --accent-contrast: #08090f;
+
+  --success: #3ad39a;
+  --success-soft: #0d2620;
+  --warning: #f0b34d;
+  --warning-soft: #2a2013;
+  --danger: #ff7a85;
+  --danger-soft: #2c1418;
+
+  --grid: rgba(255, 255, 255, 0.045);
+  --glow: rgba(124, 124, 249, 0.22);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-contrast: var(--accent-contrast);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --radius-card: 1rem;
+}
+
+/* ------------------------------------------------------------------- base */
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  color-scheme: light;
+  scroll-behavior: smooth;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--glow);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* --------------------------------------------------------------- utilities */
+
+/* Single source of truth for page gutters, so every section lines up exactly. */
+.shell {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 100rem;
+  padding-inline: clamp(1.25rem, 3.5vw, 3.5rem);
+}
+
+/* Same gutters, constrained measure for long-form reading. */
+.shell-narrow {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 72rem;
+  padding-inline: clamp(1.25rem, 3.5vw, 3.5rem);
+}
+
+.grid-backdrop {
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 40%, transparent 100%);
+}
+
+.aurora {
+  background:
+    radial-gradient(60% 55% at 15% 10%, var(--glow) 0%, transparent 60%),
+    radial-gradient(50% 45% at 85% 5%, rgba(58, 211, 154, 0.14) 0%, transparent 60%),
+    radial-gradient(45% 40% at 60% 45%, rgba(240, 179, 77, 0.1) 0%, transparent 65%);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+}
+
+.card-raised {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+}
+
+.hairline {
+  border-color: var(--border);
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.scan-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    color-mix(in srgb, var(--accent) 14%, transparent) 45%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  animation: shimmer 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes beam-sweep {
+  0% {
+    transform: translateY(-8%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(108%);
+    opacity: 0;
+  }
+}
+
+.beam {
+  animation: beam-sweep 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+  70% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.pulse-ring {
+  animation: pulse-ring 2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee {
+  animation: marquee 38s linear infinite;
+}
+
+/* Everything above must remain usable without motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .beam,
+  .marquee,
+  .pulse-ring,
+  .scan-shimmer::after {
+    animation: none !important;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+  border: 2px solid var(--background);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
