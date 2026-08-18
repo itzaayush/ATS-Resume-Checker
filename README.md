@@ -411,7 +411,6 @@ sprint exit gates in [SPRINTS.md](SPRINTS.md):
 
 <div align="center">
 
-Delivery plan and exit gates: **[SPRINTS.md](SPRINTS.md)** · Product requirements: **[../prd.md](../prd.md)**
 
 <sub>Scores are guidance, not a hiring guarantee.</sub>
 
